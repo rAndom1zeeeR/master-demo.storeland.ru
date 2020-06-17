@@ -1742,7 +1742,6 @@ function quickViewShow(href, atempt) {
           // Обновление доступности модификаций
           MainFunctions();
           AddCart();
-          quantity();
           priceDiff();
           quantity();
           $('.product-img-box .product-image').find('a').attr('href', 'javascript:void(0)');
@@ -1852,33 +1851,35 @@ function startOrder(){
 // Функция + - для товаров
 function quantity() {
 //Regulator Up копки + в карточке товара при добавлении в корзину
-qty_plus.onclick = function() {
-  var 
-    quantity = $(this).parent().find('.quantity'),
-    currentVal = parseInt(quantity.val());
-  if (!isNaN(currentVal)){
-    quantity.val(currentVal + 1);
-    quantity.trigger('keyup');
-  }
-  return false;
-};
+  qty_plus.onclick = function() {
+    var
+      quantity = $(this).parent().find('.quantity, .cartqty'),
+      currentVal = parseInt(quantity.val());
+    if (!isNaN(currentVal)){
+      quantity.val(currentVal + 1);
+      quantity.trigger('keyup');
+      quantity.trigger('change');
+    }
+    return false;
+  };
 //Regulator Down копки - в карточке товара при добавлении в корзину
-qty_minus.onclick = function() {
-  var 
-    quantity = $(this).parent().find('.quantity'),
-    currentVal = parseInt(quantity.val());
-  if (!isNaN(currentVal) && !(currentVal <= 1) ){
-    quantity.val(currentVal - 1);
-    quantity.trigger('keyup');
-  }
-  return false;
-};
+  qty_minus.onclick = function() {
+    var
+      quantity = $(this).parent().find('.quantity, .cartqty'),
+      currentVal = parseInt(quantity.val());
+    if (!isNaN(currentVal) && !(currentVal <= 1) ){
+      quantity.val(currentVal - 1);
+      quantity.trigger('keyup');
+      quantity.trigger('change');
+    }
+    return false;
+  };
 // Если вводят 0 то заменяем на 1
-$('.qty-wrap .quantity').change(function(){
-  if($(this).val() < 1){
-    $(this).val(1); 
-  }
-});
+  $('.qty-wrap .quantity, .cartqty').change(function(){
+    if($(this).val() < 1){
+      $(this).val(1);
+    }
+  });
 }
 
 // Скрипты для карточки товара и Фильтры и Отзывы
@@ -2337,6 +2338,7 @@ function ajaxnewqty(){
       }
     })
   }))
+  quantity();
 }
 
 // Удаление товара из корзины
